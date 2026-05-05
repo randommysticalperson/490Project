@@ -1,11 +1,26 @@
-body {
-  margin: 0;
-  padding: 0;
+/* ============================================================
+   googleapi.css -- Beta Educational Platform
+   CSS Houdini: @property --btn-glow, paint(dot-grid)
+   ============================================================ */
+
+@property --btn-glow {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
 }
+
+body { margin: 0; padding: 0; }
 
 .header {
   height: 100vh;
-  background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(https://images-na.ssl-images-amazon.com/images/I/816TAI7MsdL._AC_SL1500_.jpg);
+  --dot-color:   rgba(255,255,255,0.5);
+  --dot-spacing: 26;
+  --dot-radius:  2;
+  --dot-opacity: 1;
+  background-image:
+    paint(dot-grid),
+    linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+    url(https://images-na.ssl-images-amazon.com/images/I/816TAI7MsdL._AC_SL1500_.jpg);
   background-size: cover;
   background-position: center;
   display: flex;
@@ -14,13 +29,13 @@ body {
   font-family: sans-serif;
 }
 
-h1{
+h1 {
   color: #fff;
   margin-bottom: 70px;
   font-size: 45px;
   letter-spacing: 2px;
   text-align: center;
-  font-family: "Times new roman";
+  font-family: 'Times New Roman', serif;
 }
 
 .search-field {
@@ -29,33 +44,38 @@ h1{
   border: none;
   border-radius: 25px;
   outline: none;
-
+  transition: box-shadow 0.3s ease;
 }
 
-.google {
-  width: 400px;
-}
+.search-field:focus { box-shadow: 0 0 0 3px rgba(168,50,50,0.4); }
 
-.university {
-  width: 200px;
-}
+.google     { width: 400px; }
+.university { width: 200px; }
 
 .search-btn {
+  --btn-glow: 0px;
   height: 50px;
   width: 150px;
   background: rgb(168, 50, 50);
   border: none;
-  color: #000;
+  color: #fff;
   border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  box-shadow: 0 0 var(--btn-glow) rgba(168,50,50,0.7);
+  transition: --btn-glow 0.4s ease, background 0.3s ease;
 }
 
 .search-btn:hover {
+  --btn-glow: 16px;
   background: #ffc107;
-  cursor: pointer;
-
+  color: #111;
 }
 
 .form-box {
   background: rgba(0,0,0,0.5);
   padding: 30px;
+  border-radius: 8px;
+  backdrop-filter: blur(4px);
 }

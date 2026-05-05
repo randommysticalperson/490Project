@@ -1,43 +1,82 @@
-*{
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
 
+/* ============================================================
+   login.css -- Beta Educational Platform
+   CSS Houdini enhancements:
+     * @property  -- typed --btn-glow, --ripple-count
+     * paint(ripple-circles) -- decorative concentric rings on form box
+     * paint(dot-grid)       -- subtle dot texture on body
+   ============================================================ */
+
+@property --btn-glow {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+@property --ripple-count {
+  syntax: '<integer>';
+  inherits: false;
+  initial-value: 4;
 }
 
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
 
+/* -- Body: dot-grid Houdini texture over photo -------------- */
 body, html {
   width: 100%;
   height: 100vh;
-  background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),url("https://c0.wallpaperflare.com/preview/511/129/195/black-and-white-blurred-background-chairs-coffee.jpg");
+  --dot-color:   rgba(255,255,255,0.4);
+  --dot-spacing: 22;
+  --dot-radius:  1.5;
+  --dot-opacity: 1;
+  background-image:
+    paint(dot-grid),
+    linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+    url("https://c0.wallpaperflare.com/preview/511/129/195/black-and-white-blurred-background-chairs-coffee.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   margin: 0;
-
-
 }
 
+/* -- Form box: ripple-circles Houdini background ------------ */
 .form-box {
+  --ripple-color: rgba(161,50,42,0.25);
+  --ripple-count: 5;
+  --ripple-width: 1.2;
   width: 380px;
   height: 480px;
   position: relative;
   padding: 5px;
   margin: 10% auto;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0,0,0,0.45);
   color: #fff;
   overflow: hidden;
-  bottom: 10;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(6px);
 }
 
+/* Ripple overlay via pseudo-element */
+.form-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: paint(ripple-circles);
+  pointer-events: none;
+}
+
+/* -- Toggle button box -------------------------------------- */
 .button-box {
   width: 220px;
   margin: 35px auto;
   position: relative;
   box-shadow: 0 0 20px 9px rgb(161, 50, 42);
   border-radius: 30px;
-
-
 }
 
 .toggle-btn {
@@ -48,6 +87,7 @@ body, html {
   border: 0;
   position: relative;
   color: rgb(245, 236, 235);
+  transition: color 0.3s;
 }
 
 #btn {
@@ -61,6 +101,7 @@ body, html {
   transition: 0.5s;
 }
 
+/* -- Input group -------------------------------------------- */
 .input-group {
   top: 140px;
   position: absolute;
@@ -75,14 +116,21 @@ body, html {
   border-top: 0;
   border-left: 0;
   border-right: 0;
-  border-bottom: 1px solid #999;
+  border-bottom: 1px solid rgba(255,255,255,0.35);
   outline: none;
   background: transparent;
   color: #fff;
-  font-style: "times new roman";
+  font-size: 14px;
+  transition: border-color 0.3s;
 }
 
+.input-line:focus {
+  border-bottom-color: rgb(184,57,57);
+}
+
+/* -- Submit button -- glow via registered --btn-glow -------- */
 .submit-button {
+  --btn-glow: 0px;
   width: 85%;
   padding: 10px 30px;
   cursor: pointer;
@@ -93,51 +141,46 @@ body, html {
   outline: none;
   border-radius: 30px;
   color: rgb(245, 236, 235);
+  box-shadow: 0 0 var(--btn-glow) rgba(184,57,57,0.7);
+  transition: --btn-glow 0.4s ease, filter 0.3s ease;
 }
 
-.check-box {
-  margin: 30px 10px 30px 0;
+.submit-button:hover {
+  --btn-glow: 16px;
+  filter: brightness(1.15);
 }
 
-.forgot-password{
-  color: #777;
+/* -- Misc --------------------------------------------------- */
+.check-box { margin: 30px 10px 30px 0; }
+
+.forgot-password {
+  color: #aaa;
   font-size: 12px;
   bottom: 68px;
   position: absolute;
-
 }
-span{
-  color: #777;
+
+span {
+  color: #aaa;
   font-size: 12px;
   bottom: 68px;
   position: absolute;
-
 }
 
-#login {
-  left: 50px;
-}
-
-#register {
-  left: 450px;
-}
+#login    { left: 50px; }
+#register { left: 450px; }
 
 .slogan {
   font-size: 10mm;
-  background: #fff;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #fff;
   font-weight: 300;
-  font-family: "raleway";
+  font-family: 'Raleway', sans-serif;
   text-align: center;
-
+  letter-spacing: 0.1em;
 }
 
 .front-text {
   font-size: 4mm;
-  background: transparent;
   font-weight: 300;
-  font-family: "calibri";
-  color: #fff;
-
+  color: rgba(255,255,255,0.85);
 }
